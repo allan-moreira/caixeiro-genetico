@@ -91,7 +91,7 @@ def algoritmo_evolutivo(matriz_distancias):
 
         # Elitismo: mantém o melhor indivíduo para a próxima geração
         elite = elitismo(populacao, fitness)
-        nova_populacao.extend([elite[0][:]])
+        nova_populacao.extend([elite[:]])
 
         # Seleção, cruzamento e mutação
         while len(nova_populacao) < POPULACAO_INICIAL:

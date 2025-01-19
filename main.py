@@ -116,7 +116,7 @@ def algoritmo_evolutivo(matriz_distancias):
     return melhor_cromossomo, min(fitness_final)
 
 # Execução
-if _name_ == "_main_":
+if __name__ == "_main_":
     matriz_distancias = gerar_matriz_distancias(NUM_CIDADES)
     print("Matriz de Distâncias:")
     print(matriz_distancias)

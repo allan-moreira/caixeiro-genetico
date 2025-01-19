@@ -1,6 +1,5 @@
 import random
 import numpy as np
-import copy
 
 # Número de cidades
 NUM_CIDADES = 6

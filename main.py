@@ -12,47 +12,39 @@ melhor = [0, 3, 5, 1, 4, 2, 0]
 
 # Geração de matriz de distâncias entre cidades (aleatória)
 def gerar_matriz_distancias(n):
-    """matriz = np.random.randint(10, 100, size=(n, n))
+    matriz = np.random.randint(10, 100, size=(n, n))
     np.fill_diagonal(matriz, 0)  # Distância de uma cidade para si mesma é 0
-    return (matriz + matriz.T) // 2  # Tornar simétrica"""
-    
-    return np.array([[ 0, 25,  1,  1, 32, 45],
-                     [25,  0, 65, 45,  1,  1],
-                     [ 1, 65,  0, 39,  1, 53],
-                     [ 1, 45, 39,  0, 71,  1],
-                     [32,  1,  1, 71,  0, 50],
-                     [45,  1, 53,  1, 50,  0]])
-            
+    return (matriz + matriz.T) // 2  # Tornar simétrica
 
 # Inicialização dos cromossomos (indivíduos)
 def inicializar_populacao(tamanho_pop, num_cidades):
-    return [[0] + random.sample(range(1, num_cidades), num_cidades - 1) + [0] for _ in range(tamanho_pop)]
+    return [[0] + random.sample(range(1, num_cidades), num_cidades - 1) + [0] for _ in range(tamanho_pop)] # Cria vetor que começa e termina em 0 e possui o numero de cada cidade sem repetição
 
 # Avaliação da aptidão de um cromossomo
 def calcular_fitness(cromossomo, matriz_distancias):
     custo = 0
     for i in range(len(cromossomo) - 1):
-        custo += matriz_distancias[cromossomo[i], cromossomo[i + 1]]
+        custo += matriz_distancias[cromossomo[i], cromossomo[i + 1]] # Função a ser minimizada
     return custo
 
 # Seleção por deterministica
 def selecao_deterministica(populacao):
-    return random.sample(populacao, 2)
+    return random.sample(populacao, 2) # Escolhe dois indivíduos aleatórios
 
 def elitismo(populacao, fitness):
-    return sorted(zip(populacao, fitness), key=lambda x: x[1])[0]
+    return min(zip(populacao, fitness), key=lambda x: x[1])[0] # Escolhe o melhor indivíduo da geração (menor distancia)
 
 # Crossover
 def crossover(pai1, pai2):
     tamanho = len(pai1)
-    divisao = int(0.7 * tamanho)
+    divisao = int(0.7 * tamanho) # Cria uma divisão de aproximadamente 70% do tamanho do cromossomo
 
-    filho = tamanho * [0]
-    filho[:divisao] = pai1[:divisao]
+    filho = tamanho * [0] 
+    filho[:divisao] = pai1[:divisao] # Cria um filho que recebe a primeira metade do pai 1
 
-    preenche = [gene for gene in pai2 if gene not in filho]
+    preenche = [gene for gene in pai2 if gene not in filho] # cria vetor das cidades que o filho ainda não tem em relaçao ao pai 2
 
-    for i in range(divisao, tamanho - 1):
+    for i in range(divisao, tamanho - 1): # Substitui os 0's pelas cidades do pai 2
         filho[i] = preenche.pop(0)
 
     print(f"            Crossover entre {pai1} e {pai2} tendo como filho {filho}")
@@ -61,11 +53,11 @@ def crossover(pai1, pai2):
 
 # Mutação (troca de posições aleatórias)
 def mutacao(individuo):
-    mutado = individuo[:]
+    mutado = individuo[:] # Cria uma cópia profunda
 
-    if random.random() <= TAXA_MUTACAO:
+    if random.random() <= TAXA_MUTACAO: 
         idx1, idx2 = random.sample(range(1, len(individuo) - 1), 2)
-        mutado[idx1], mutado[idx2] = mutado[idx2], mutado[idx1]
+        mutado[idx1], mutado[idx2] = mutado[idx2], mutado[idx1] # Troca duas posições aleatórias do cromossomo de lugar
 
         print(f"                Mutação do individuo {individuo} para {mutado}")
 
@@ -89,6 +81,7 @@ def algoritmo_evolutivo(matriz_distancias):
         melhor_fitness = resultados[0][1]
         melhor_cromossomo = resultados[0][0]
 
+        # Exibição da geração
         print(f"\nGeração {geracao}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
         imprime_geracao(resultados)
 
@@ -96,17 +89,17 @@ def algoritmo_evolutivo(matriz_distancias):
 
         print(f"\n        Gerando nova população:")
 
-        # Elitismo: manter o melhor indivíduo para a próxima geração
+        # Elitismo: mantém o melhor indivíduo para a próxima geração
         elite = elitismo(populacao, fitness)
         nova_populacao.extend([elite[0][:]])
 
         # Seleção, cruzamento e mutação
         while len(nova_populacao) < POPULACAO_INICIAL:
-            pai1, pai2 = selecao_deterministica(populacao)
-            individuo = crossover(pai1, pai2)
+            pai1, pai2 = selecao_deterministica(populacao) # Seleciona
+            individuo = crossover(pai1, pai2) # Cruza
 
             if random.random() <= TAXA_MUTACAO:
-                individuo = mutacao(individuo)
+                individuo = mutacao(individuo) # Muta
 
             nova_populacao.append(individuo)
         
@@ -118,6 +111,7 @@ def algoritmo_evolutivo(matriz_distancias):
     melhor_fitness = resultados[0][1]
     melhor_cromossomo = resultados[0][0]
 
+    # Exibição da última geração
     print(f"\nGeração {50}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
     imprime_geracao(resultados)
 

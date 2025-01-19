@@ -1,7 +1,6 @@
 import random
 import numpy as np
-import copy
-
+from forca_bruta import caixeiro_viajante
 # Número de cidades
 NUM_CIDADES = 6
 POPULACAO_INICIAL = 5
@@ -68,9 +67,10 @@ def imprime_geracao(resultado):
         print(f"        Individuo: {individuo[0]} -> Distancia percorrida: {individuo[1]}")
 
 # Algoritmo Evolutivo
-def algoritmo_evolutivo(matriz_distancias):
+def algoritmo_evolutivo(matriz_distancias, custo):
     # Inicialização
     populacao = inicializar_populacao(POPULACAO_INICIAL, NUM_CIDADES)
+    geracao = 0
     
     for geracao in range(GERACOES):
         # Avaliar a aptidão
@@ -84,6 +84,9 @@ def algoritmo_evolutivo(matriz_distancias):
         # Exibição da geração
         print(f"\nGeração {geracao}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
         imprime_geracao(resultados)
+
+        if melhor_fitness == custo:
+            break
 
         nova_populacao = []
 
@@ -112,7 +115,7 @@ def algoritmo_evolutivo(matriz_distancias):
     melhor_cromossomo = resultados[0][0]
 
     # Exibição da última geração
-    print(f"\nGeração {50}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
+    print(f"\nGeração Final: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
     imprime_geracao(resultados)
 
     return melhor_cromossomo, melhor_fitness
@@ -120,9 +123,14 @@ def algoritmo_evolutivo(matriz_distancias):
 # Execução
 if __name__ == "__main__":
     matriz_distancias = gerar_matriz_distancias(NUM_CIDADES)
-    print("Matriz de Distâncias:")
-    print(matriz_distancias)
+    print("Matriz de Distâncias:", matriz_distancias)
 
-    melhor_rota, melhor_custo = algoritmo_evolutivo(matriz_distancias)
+    rota, custo = caixeiro_viajante(matriz_distancias)
+
+    melhor_rota, melhor_custo = algoritmo_evolutivo(matriz_distancias, custo)
     print("\nMelhor Rota Encontrada:", melhor_rota)
     print("Custo da Melhor Rota:", melhor_custo)
+
+
+    print("\nMelhor Rota Encontrada por força bruta:", rota)
+    print("Custo da Melhor Rota por força bruta:", custo)

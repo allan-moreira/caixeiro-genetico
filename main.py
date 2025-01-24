@@ -109,7 +109,7 @@ def algoritmo_evolutivo(matriz_distancias):
     melhor_cromossomo = resultados[0][0]
 
     # Exibição da última geração
-    print(f"\nGeração {50}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
+    print(f"\nGeração {GERACOES}: Melhor solução = {melhor_cromossomo}, Fitness = {melhor_fitness}")
     imprime_geracao(resultados)
 
     return melhor_cromossomo, melhor_fitness

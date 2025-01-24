@@ -1,13 +1,11 @@
 import random
 import numpy as np
 
-# Número de cidades
+# Inicialização de Constantes
 NUM_CIDADES = 6
 POPULACAO_INICIAL = 5
 GERACOES = 50
 TAXA_MUTACAO = 0.8
-
-melhor = [0, 3, 5, 1, 4, 2, 0]
 
 # Geração de matriz de distâncias entre cidades (aleatória)
 def gerar_matriz_distancias(n):

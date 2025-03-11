@@ -117,8 +117,7 @@ def algoritmo_evolutivo(matriz_distancias):
 # Execução
 if __name__ == "__main__":
     matriz_distancias = gerar_matriz_distancias(NUM_CIDADES)
-    print("Matriz de Distâncias:")
-    print(matriz_distancias)
+    print("Matriz de Distâncias:\n", matriz_distancias)
 
     melhor_rota, melhor_custo = algoritmo_evolutivo(matriz_distancias)
     print("\nMelhor Rota Encontrada:", melhor_rota)
